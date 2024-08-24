@@ -1,0 +1,15 @@
+if (grep -E "^(Nocturne|Atlas|Eve)$" /sys/class/dmi/id/product_name &> /dev/null)
+then
+	cp /etc/cros-keyboard-map/configs/cros-pixel.conf /etc/cros-keyboard-map/current.config
+elif (grep -E "^(Sarien|Arcada)$" /sys/class/dmi/id/product_name &> /dev/null)
+then
+	cp /etc/cros-keyboard-map/configs/cros-sarien.conf /etc/cros-keyboard-map/current.config
+else
+	python3 /etc/cros-keyboard-map/cros-keyboard-map.py --file /etc/cros-keyboard-map/current.config
+fi
+
+mkdir -p /etc/keyd
+if [[ -f /etc/keyd/default.conf ]]; then
+	rm /etc/keyd/default.conf
+fi
+ln -s /etc/cros-keyboard-map/current.config /etc/keyd/default.conf

@@ -1,0 +1,11 @@
+[Unit]
+Description=Generate chromebook keyboard layout
+After=tmp.mount
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /usr/bin/um-generate-cros-keymap
+ExecStartPost=+/usr/bin/keyd reload
+
+[Install]
+WantedBy=multi-user.target
